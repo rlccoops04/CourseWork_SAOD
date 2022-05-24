@@ -63,6 +63,10 @@ namespace CourseWork_SAOD
                 pCurrent.SetNext(newElement);
                 countTeams++;
             }
+            else
+            {
+                Console.WriteLine("Команда не найдена.");
+            }
         }
         public void PushTeamBefore(string name_new, string name_search)
         {
@@ -87,12 +91,16 @@ namespace CourseWork_SAOD
                     pPrevious.SetNext(newElement);
                 }
             }
+            else
+            {
+                Console.WriteLine("Команда не найдена.");
+            }
         }
         public void Remove(string name_search)
         {
             ListElement pCurrent = pHead;
             ListElement pPrevious = null;
-            while (pCurrent.GetTeam().GetName() != name_search || pCurrent != null)
+            while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
             {
                 pPrevious = pCurrent;
                 pCurrent = pCurrent.GetNext();
@@ -101,8 +109,10 @@ namespace CourseWork_SAOD
             {
                 if(pPrevious == null)
                 {
+                    ListElement pTemp = pHead.GetNext();
                     pHead.GetTeam().ClearMemory();
                     pHead = null;
+                    pHead = pTemp;
                 }
                 else
                 {
@@ -111,6 +121,10 @@ namespace CourseWork_SAOD
                     pCurrent.GetTeam().ClearMemory();
                     pCurrent = null;
                 }
+            }
+            else
+            {
+                Console.WriteLine("Команда не найдена.");
             }
         }
         public void DisplayTeams()
@@ -132,6 +146,18 @@ namespace CourseWork_SAOD
             {
                 pCurrent.GetTeam().Display();
                 pCurrent = pCurrent.GetNext();
+            }
+        }
+        public void ClearMemory()
+        {
+            ListElement pCurrent = pHead;
+            ListElement pTemp;
+            while(pCurrent != null)
+            {
+                pTemp = pCurrent.GetNext();
+                pCurrent.GetTeam().ClearMemory();
+                pCurrent = null;
+                pCurrent = pTemp;
             }
         }
     }

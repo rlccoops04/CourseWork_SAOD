@@ -8,10 +8,6 @@ namespace CourseWork_SAOD
 {
     class Program
     {
-        static void Menu()
-        {
-
-        }
         static void Main(string[] args)
         {
             SportsLeague sportleague = new SportsLeague("КВН");
