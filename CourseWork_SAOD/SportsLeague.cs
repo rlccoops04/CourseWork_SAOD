@@ -36,12 +36,14 @@ namespace CourseWork_SAOD
         public SportsLeague(string name)
         {
             SetName(name);
+            Team team = null;
+            pHead = new ListElement(team);
         }
 
         public bool IsEmpty() { return countTeams == 0; }
         public ListElement Search(string name_search)
         {
-            ListElement pCurrent = pHead;
+            ListElement pCurrent = pHead.GetNext();
             while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
             {
                 pCurrent = pCurrent.GetNext();
@@ -50,7 +52,7 @@ namespace CourseWork_SAOD
         }
         public void PushTeamAfter(string name_new, string name_search)
         {
-            ListElement pCurrent = pHead;
+            ListElement pCurrent = pHead.GetNext();
             while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
             {
                 pCurrent = pCurrent.GetNext();
@@ -65,83 +67,52 @@ namespace CourseWork_SAOD
             }
             else
             {
-                Console.WriteLine("Команда не найдена.");
+                Console.WriteLine("Команда не найдена.\n");
             }
         }
         public void PushTeamBefore(string name_new, string name_search)
         {
-            ListElement pCurrent = pHead;
-            ListElement pPrevious = null;
-            while (pCurrent.GetTeam().GetName() != name_search || pCurrent != null)
-            {
-                pPrevious = pCurrent;
-                pCurrent = pCurrent.GetNext();
-            }
-            if (pCurrent != null) // элемент найден
-            {
-                Team team = new Team(name_new);
-                ListElement newElement = new ListElement(team);
-                if(pPrevious == null) // добавляем перед первым
-                {
-                    newElement.SetNext(pCurrent);
-                }
-                else
-                {
-                    newElement.SetNext(pCurrent);
-                    pPrevious.SetNext(newElement);
-                }
-            }
-            else
-            {
-                Console.WriteLine("Команда не найдена.");
-            }
-        }
-        public void Remove(string name_search)
-        {
-            ListElement pCurrent = pHead;
-            ListElement pPrevious = null;
+            ListElement pCurrent = pHead.GetNext();
+            ListElement pPrevious = pHead;
             while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
             {
                 pPrevious = pCurrent;
                 pCurrent = pCurrent.GetNext();
             }
-            if (pCurrent != null) // элемент найден
+            Team team = new Team(name_new);
+            ListElement newElement = new ListElement(team);
+            newElement.SetNext(pCurrent);
+            pPrevious.SetNext(newElement);
+        }
+        public void Remove(string name_search)
+        {
+            ListElement pCurrent = pHead.GetNext();
+            ListElement pPrevious = pHead;
+            while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
             {
-                if(pPrevious == null)
-                {
-                    ListElement pTemp = pHead.GetNext();
-                    pHead.GetTeam().ClearMemory();
-                    pHead = null;
-                    pHead = pTemp;
-                }
-                else
-                {
-                    pPrevious.SetNext(pCurrent.GetNext());
-                    pCurrent.SetNext(null);
-                    pCurrent.GetTeam().ClearMemory();
-                    pCurrent = null;
-                }
+                pPrevious = pCurrent;
+                pCurrent = pCurrent.GetNext();
             }
-            else
-            {
-                Console.WriteLine("Команда не найдена.");
-            }
+            pPrevious.SetNext(pCurrent.GetNext());
+            pCurrent.SetNext(null);
+            pCurrent.GetTeam().ClearMemory();
+            pCurrent = null;
         }
         public void DisplayTeams()
         {
-            ListElement pCurrent = pHead;
-            Console.WriteLine($"Название Спортлиги: {name}");
+            ListElement pCurrent = pHead.GetNext();
+            Console.WriteLine($"Спортлига - {name}.");
             while (pCurrent != null)
             {
-                Console.WriteLine($"Название команды - {pCurrent.GetTeam().GetName()}.");
+                Console.WriteLine($"Команда - {pCurrent.GetTeam().GetName()}.");
                 pCurrent = pCurrent.GetNext();
             }
             Console.WriteLine();
         }
         public void DisplayTeamsAndPlayers()
         {
-            ListElement pCurrent = pHead;
-            Console.WriteLine($"Название Спортлиги: {name}.");
+            ListElement pCurrent = pHead.GetNext();
+            Console.WriteLine($"Спортлига - {name}.");
             while (pCurrent != null)
             {
                 pCurrent.GetTeam().Display();

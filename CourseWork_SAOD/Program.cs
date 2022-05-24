@@ -10,7 +10,9 @@ namespace CourseWork_SAOD
     {
         static void Main(string[] args)
         {
-            SportsLeague sportleague = new SportsLeague("КВН");
+            Menu menu = new Menu();
+            menu.RunMenu();
+/*            SportsLeague sportleague = new SportsLeague("КВН");
             Team team = new Team("ПРИКОЛИСТЫ");
             for (int i = 0; i < 11; i++)
             {
@@ -18,17 +20,16 @@ namespace CourseWork_SAOD
                 team.Push(player);
             }
             ListElement listelement = new ListElement(team);
-            sportleague.SetHead(listelement);
-            for(int i = 0; i < 5; i++)
+            sportleague.GetHead().SetNext(listelement);
+            sportleague.PushTeamAfter($"УГАРАТОРЫ", $"ПРИКОЛИСТЫ");
+            Team team1 = sportleague.Search("УГАРАТОРЫ").GetTeam();
+            ListElement listelement1 = new ListElement(team1);
+            for (int i = 0; i < 11; i++)
             {
-                sportleague.PushTeamAfter($"{i + 1}", $"{i}");
+                StackElement player = new StackElement($"{i}", i);
+                team1.Push(player);
             }
-            sportleague.DisplayTeamsAndPlayers();
-            sportleague.Search("ПРИКОЛИСТЫ").GetTeam().Pop();
-            sportleague.DisplayTeamsAndPlayers();
-            sportleague.Search("ПРИКОЛИСТЫ").GetTeam().Push("GGR", -1);
-            sportleague.DisplayTeamsAndPlayers();
-            sportleague.DisplayTeams();
+            sportleague.DisplayTeamsAndPlayers();*/
             Console.ReadKey();
         }
     }

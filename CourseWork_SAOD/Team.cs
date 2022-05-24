@@ -9,7 +9,7 @@ namespace CourseWork_SAOD
     public class Team
     {
         private StackElement[] players = new StackElement[11];
-        public StackElement[] Players() { return players; }
+        public int GetMaxPlayers() { return players.Length; }
 
         private int countPlayers;
         public int GetCountPlayers() { return countPlayers; }
@@ -25,7 +25,7 @@ namespace CourseWork_SAOD
         }
 
         public bool IsEmpty() { return (countPlayers == 0); }
-        public bool IsFull() { return (countPlayers == players.Length); }
+        public bool IsFull() { return (countPlayers == GetMaxPlayers()); }
         public void Push(StackElement player)
         {
             if(!IsFull())
@@ -47,14 +47,29 @@ namespace CourseWork_SAOD
             countPlayers--;
             return temp;
         }
+        public StackElement Search(string playerSurname, int playerNum)
+        {
+            for(int i = 0; i < playerNum; i++)
+            {
+                if(players[i].GetPlayerNum() == playerNum && players[i].GetPlayerSurname() == playerSurname ) { return players[i]; }
+            }
+            return null;
+        }
         public void Display()
         {
             int count = 0;
-            Console.WriteLine($"Название команды - {name}.\nСостав игроков:");
-            while (count < countPlayers)
+            Console.WriteLine($"Команда - {name}.\nСостав игроков:");
+            if (IsEmpty())
             {
-                Console.WriteLine($"Фамилия - {players[count].GetPlayerSurname()}, номер - {players[count].GetPlayerNum()}");
-                count++;
+                Console.WriteLine("Игроки отсутствуют");
+            }
+            else
+            {
+                while (count < countPlayers)
+                {
+                    Console.WriteLine($"{players[count].GetPlayerSurname()} - {players[count].GetPlayerNum()}");
+                    count++;
+                }
             }
             Console.WriteLine();
         }
@@ -63,9 +78,9 @@ namespace CourseWork_SAOD
             while(countPlayers != 0)
             {
                 players[countPlayers - 1] = null;
-                players = null;
                 countPlayers--;
             }
+            players = null;
         }
     }
 }
