@@ -50,6 +50,7 @@
     <Compile Include="SportsLeague.cs" />
     <Compile Include="StackElement.cs" />
     <Compile Include="Team.cs" />
+    <Compile Include="XMLReadSave.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

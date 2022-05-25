@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CourseWork_SAOD
 {
@@ -50,6 +52,16 @@ namespace CourseWork_SAOD
             }
             return pCurrent;
         }
+        public void PushTeamEnd(ListElement newlistElement)
+        {
+            ListElement pCurrent = GetHead();
+            while (pCurrent.GetNext() != null)
+            {
+                pCurrent = pCurrent.GetNext();
+            }
+            pCurrent.SetNext(newlistElement);
+            countTeams++;
+        }
         public void PushTeamAfter(string name_new, string name_search)
         {
             ListElement pCurrent = pHead.GetNext();
@@ -57,18 +69,11 @@ namespace CourseWork_SAOD
             {
                 pCurrent = pCurrent.GetNext();
             }
-            if (pCurrent != null)
-            {
-                Team team = new Team(name_new);
-                ListElement newElement = new ListElement(team);
-                newElement.SetNext(pCurrent.GetNext());
-                pCurrent.SetNext(newElement);
-                countTeams++;
-            }
-            else
-            {
-                Console.WriteLine("Команда не найдена.\n");
-            }
+            Team team = new Team(name_new);
+            ListElement newElement = new ListElement(team);
+            newElement.SetNext(pCurrent.GetNext());
+            pCurrent.SetNext(newElement);
+            countTeams++;
         }
         public void PushTeamBefore(string name_new, string name_search)
         {
@@ -83,6 +88,7 @@ namespace CourseWork_SAOD
             ListElement newElement = new ListElement(team);
             newElement.SetNext(pCurrent);
             pPrevious.SetNext(newElement);
+            countTeams++;
         }
         public void Remove(string name_search)
         {
@@ -97,6 +103,10 @@ namespace CourseWork_SAOD
             pCurrent.SetNext(null);
             pCurrent.GetTeam().ClearMemory();
             pCurrent = null;
+        }
+        public void ReadFile(StreamReader sr)
+        {
+
         }
         public void DisplayTeams()
         {
@@ -117,6 +127,24 @@ namespace CourseWork_SAOD
             {
                 pCurrent.GetTeam().Display();
                 pCurrent = pCurrent.GetNext();
+            }
+        }
+        public void ReadSportsLeagueData(XElement sportsleague)
+        {
+            var dprt_curr = GetHead().GetNext();
+            while(dprt_curr != null)
+            {
+                XElement dprt_ = new XElement("team");
+
+                XAttribute dprtNameAttr = new XAttribute("name", dprt_curr.GetTeam().GetName());
+
+                dprt_.Add(dprtNameAttr);
+
+                dprt_curr.GetTeam().ReadTeamData(dprt_);
+
+                sportsleague.Add(dprt_);
+
+                dprt_curr = dprt_curr.GetNext();
             }
         }
         public void ClearMemory()

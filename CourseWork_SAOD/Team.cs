@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace CourseWork_SAOD
 {
@@ -47,14 +48,6 @@ namespace CourseWork_SAOD
             countPlayers--;
             return temp;
         }
-        public StackElement Search(string playerSurname, int playerNum)
-        {
-            for(int i = 0; i < playerNum; i++)
-            {
-                if(players[i].GetPlayerNum() == playerNum && players[i].GetPlayerSurname() == playerSurname ) { return players[i]; }
-            }
-            return null;
-        }
         public void Display()
         {
             int count = 0;
@@ -72,6 +65,21 @@ namespace CourseWork_SAOD
                 }
             }
             Console.WriteLine();
+        }
+        public void ReadTeamData(XElement sportsleague)
+        {
+            int count = 0;
+            var emp_curr = players[count];
+            while (count < countPlayers)
+            {
+                XElement emp_ = new XElement("player");
+                XElement emp_name = new XElement("surname", emp_curr.GetPlayerSurname());
+                XElement emp_surname = new XElement("playernumber", emp_curr.GetPlayerNum());
+                emp_.Add(emp_name); emp_.Add(emp_surname);
+                sportsleague.Add(emp_);
+                count++;
+                emp_curr = players[count];
+            }
         }
         public void ClearMemory()
         {
