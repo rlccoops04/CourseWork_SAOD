@@ -35,8 +35,8 @@ namespace CourseWork_SAOD
                                   "7) Показать состав команды\n" +
                                   "8) Показать команды\n" +
                                   "9) Показать команды с их составами\n" +
-                                  "10) Загрузить структуру спортлиги из TXT-файла\n" +
-                                  "11) Сохранить структуру спортлиги в TXT-файл\n" +
+                                  "10) Загрузить структуру спортлиги из XML-файла\n" +
+                                  "11) Сохранить структуру спортлиги в XML-файл\n" +
                                   "12) Очистить структуру\n" +
                                   "13) Выход\n");
                 Console.Write("Ввод: ");
@@ -287,7 +287,10 @@ namespace CourseWork_SAOD
                         Console.WriteLine();
                         break;
                     case 11:
-                        file_path = "D:\\Visual studio projects\\output.xml";
+                        Console.Write("Введите путь к файлу(Enter - путь по умолчанию): ");
+                        file_path = Console.ReadLine();
+                        if (file_path.Length == 0)
+                            file_path = "D:\\Visual studio projects\\output.xml";
                         xmlFile = new XMLReadSave(file_path);
                         xmlFile.Save(sportsLeague);
                         xmlFile = null;
@@ -298,9 +301,14 @@ namespace CourseWork_SAOD
                         {
                             Console.WriteLine("Спортлига не создана!");
                         }
-                        else if (sportsLeague.IsEmpty())
+                        else if (!sportsLeague.IsEmpty())
                         {
                             sportsLeague.ClearMemory();
+                            sportsLeague = null;
+                            Console.WriteLine("Структура удалена.");
+                        }
+                        else
+                        {
                             sportsLeague = null;
                             Console.WriteLine("Структура удалена.");
                         }
