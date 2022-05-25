@@ -1,26 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace CourseWork_SAOD
 {
     public class SportsLeague
     {
-        private string name;
-        public string GetName() { return name; }
-        public void SetName(string name) { this.name = name; }
+        private string name_sportsleague;
+        public string GetName() { return name_sportsleague; }
+        public void SetName(string name_sportsleague) { this.name_sportsleague = name_sportsleague; }
 
         private ListElement pHead; 
         public ListElement GetHead() { return pHead; }
         public void SetHead(ListElement pHead) { this.pHead = pHead; }
 
-        private int countTeams;
-        public int GetCountTeams() { return countTeams; }
-        public void SetCountTeams(int countTeams) { this.countTeams = countTeams; }
+        private int count_teams;
+        public int GetCountTeams() { return count_teams; }
+        public void SetCountTeams(int countTeams) { this.count_teams = countTeams; }
 
         private int countPlayers;
         public int GetCountPlayers() 
@@ -42,7 +37,7 @@ namespace CourseWork_SAOD
             pHead = new ListElement(team);
         }
 
-        public bool IsEmpty() { return countTeams == 0; }
+        public bool IsEmpty() { return count_teams == 0; }
         public ListElement Search(string name_search)
         {
             ListElement pCurrent = pHead.GetNext();
@@ -60,12 +55,12 @@ namespace CourseWork_SAOD
                 pCurrent = pCurrent.GetNext();
             }
             pCurrent.SetNext(newlistElement);
-            countTeams++;
+            count_teams++;
         }
         public void PushTeamAfter(string name_new, string name_search)
         {
             ListElement pCurrent = pHead.GetNext();
-            while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
+            while (pCurrent.GetTeam().GetName() != name_search)
             {
                 pCurrent = pCurrent.GetNext();
             }
@@ -73,13 +68,13 @@ namespace CourseWork_SAOD
             ListElement newElement = new ListElement(team);
             newElement.SetNext(pCurrent.GetNext());
             pCurrent.SetNext(newElement);
-            countTeams++;
+            count_teams++;
         }
         public void PushTeamBefore(string name_new, string name_search)
         {
             ListElement pCurrent = pHead.GetNext();
             ListElement pPrevious = pHead;
-            while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
+            while (pCurrent.GetTeam().GetName() != name_search)
             {
                 pPrevious = pCurrent;
                 pCurrent = pCurrent.GetNext();
@@ -88,30 +83,27 @@ namespace CourseWork_SAOD
             ListElement newElement = new ListElement(team);
             newElement.SetNext(pCurrent);
             pPrevious.SetNext(newElement);
-            countTeams++;
+            count_teams++;
         }
         public void Remove(string name_search)
         {
             ListElement pCurrent = pHead.GetNext();
             ListElement pPrevious = pHead;
-            while (pCurrent != null && pCurrent.GetTeam().GetName() != name_search)
+            while (pCurrent.GetTeam().GetName() != name_search)
             {
                 pPrevious = pCurrent;
                 pCurrent = pCurrent.GetNext();
             }
             pPrevious.SetNext(pCurrent.GetNext());
             pCurrent.SetNext(null);
-            pCurrent.GetTeam().ClearMemory();
+            if(pCurrent.GetTeam() != null)
+                pCurrent.GetTeam().ClearMemory();
             pCurrent = null;
-        }
-        public void ReadFile(StreamReader sr)
-        {
-
         }
         public void DisplayTeams()
         {
             ListElement pCurrent = pHead.GetNext();
-            Console.WriteLine($"Спортлига - {name}.");
+            Console.WriteLine($"Спортлига - {name_sportsleague}.");
             while (pCurrent != null)
             {
                 Console.WriteLine($"Команда - {pCurrent.GetTeam().GetName()}.");
@@ -122,7 +114,7 @@ namespace CourseWork_SAOD
         public void DisplayTeamsAndPlayers()
         {
             ListElement pCurrent = pHead.GetNext();
-            Console.WriteLine($"Спортлига - {name}.");
+            Console.WriteLine($"Спортлига - {name_sportsleague}.");
             while (pCurrent != null)
             {
                 pCurrent.GetTeam().Display();
@@ -131,20 +123,15 @@ namespace CourseWork_SAOD
         }
         public void ReadSportsLeagueData(XElement sportsleague)
         {
-            var dprt_curr = GetHead().GetNext();
-            while(dprt_curr != null)
+            ListElement team_current = GetHead().GetNext();
+            while(team_current != null)
             {
-                XElement dprt_ = new XElement("team");
-
-                XAttribute dprtNameAttr = new XAttribute("name", dprt_curr.GetTeam().GetName());
-
-                dprt_.Add(dprtNameAttr);
-
-                dprt_curr.GetTeam().ReadTeamData(dprt_);
-
-                sportsleague.Add(dprt_);
-
-                dprt_curr = dprt_curr.GetNext();
+                XElement team = new XElement("team");
+                XAttribute teamName = new XAttribute("name", team_current.GetTeam().GetName());
+                team.Add(teamName);
+                team_current.GetTeam().ReadTeamData(team);
+                sportsleague.Add(team);
+                team_current = team_current.GetNext();
             }
         }
         public void ClearMemory()
@@ -154,7 +141,8 @@ namespace CourseWork_SAOD
             while(pCurrent != null)
             {
                 pTemp = pCurrent.GetNext();
-                pCurrent.GetTeam().ClearMemory();
+                if(pCurrent.GetTeam() != null)
+                    pCurrent.GetTeam().ClearMemory();
                 pCurrent = null;
                 pCurrent = pTemp;
             }

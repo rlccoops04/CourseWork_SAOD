@@ -19,6 +19,7 @@ namespace CourseWork_SAOD
             string name, name_search, file_path;
             SportsLeague sportsLeague = null;
             Team team;
+            Player player;
             ListElement searchedElement;
             ListElement listElement;
             XMLReadSave xmlFile;
@@ -31,14 +32,13 @@ namespace CourseWork_SAOD
                                   "4) Удалить команду\n" +
                                   "5) Удалить игрока из команды\n" +
                                   "6) Поиск команды\n" +
-                                  "7) Поиск игрока(?)\n" +
-                                  "8) Показать состав команды\n" +
-                                  "9) Показать команды\n" +
-                                  "10) Показать команды с их составами\n" +
-                                  "11) Загрузить структуру спортлиги из TXT-файла\n" +
-                                  "12) Сохранить структуру спортлиги в TXT-файл\n" +
-                                  "13) Очистить структуру\n" +
-                                  "14) Выход\n");
+                                  "7) Показать состав команды\n" +
+                                  "8) Показать команды\n" +
+                                  "9) Показать команды с их составами\n" +
+                                  "10) Загрузить структуру спортлиги из TXT-файла\n" +
+                                  "11) Сохранить структуру спортлиги в TXT-файл\n" +
+                                  "12) Очистить структуру\n" +
+                                  "13) Выход\n");
                 Console.Write("Ввод: ");
                 choicemenu = int.Parse(Console.ReadLine());
                 Console.WriteLine();
@@ -124,6 +124,10 @@ namespace CourseWork_SAOD
                             }
                             else
                             {
+                                if(searchedElement.GetTeam().IsFull())
+                                {
+
+                                }
                                 Console.Write("Введите фамилию нового игрока: ");
                                 name = Console.ReadLine();
                                 Console.Write("Введите номер нового игрока: ");
@@ -180,7 +184,8 @@ namespace CourseWork_SAOD
                             {
                                 if(!searchedElement.GetTeam().IsEmpty())
                                 {
-                                    searchedElement.GetTeam().Pop();
+                                    player = searchedElement.GetTeam().Pop();
+                                    Console.WriteLine($"Удаленный игрок: {player.GetPlayerSurname()} - {player.GetPlayerNum()}");
                                 }
                                 else
                                 {
@@ -210,13 +215,13 @@ namespace CourseWork_SAOD
                             }
                             else
                             {
-                                Console.WriteLine("Команда есть в спортлиге.");
-                                searchedElement.GetTeam().Display();
+                                Console.Write("Команда есть в спортлиге. ");
+                                Console.WriteLine($"Количество игроков: {searchedElement.GetTeam().GetCountPlayers()}");
                             }
                         }
                         Console.WriteLine();
                         break;
-                    case 8:
+                    case 7:
                         if (sportsLeague == null)
                         {
                             Console.WriteLine("Спортлига не создана!");
@@ -241,7 +246,7 @@ namespace CourseWork_SAOD
                         }
                         Console.WriteLine();
                         break;
-                    case 9:
+                    case 8:
                         if (sportsLeague == null)
                         {
                             Console.WriteLine("Спортлига не создана!");
@@ -256,7 +261,7 @@ namespace CourseWork_SAOD
                         }
                         Console.WriteLine();
                         break;
-                    case 10:
+                    case 9:
                         if (sportsLeague == null)
                         {
                             Console.WriteLine("Спортлига не создана!");
@@ -271,41 +276,38 @@ namespace CourseWork_SAOD
                         }
                         Console.WriteLine();
                         break;
-                    case 11:
+                    case 10:
                         Console.Write("Введите путь к файлу(Enter - путь по умолчанию): ");
                         file_path = Console.ReadLine();
-                        file_path = "D:\\Visual studio projects\\input.xml";
+                        if(file_path.Length == 0)
+                            file_path = "D:\\Visual studio projects\\input.xml";
                         xmlFile = new XMLReadSave(file_path);
                         sportsLeague = xmlFile.OpenFile();
+                        xmlFile = null;
                         Console.WriteLine();
                         break;
-                    case 12:
+                    case 11:
                         file_path = "D:\\Visual studio projects\\output.xml";
                         xmlFile = new XMLReadSave(file_path);
                         xmlFile.Save(sportsLeague);
+                        xmlFile = null;
                         Console.WriteLine();
                         break;
-                    case 13:
-                        try
-                        {
-                            sportsLeague.ClearMemory();
-                            sportsLeague = null;
-                        }
-                        catch(Exception e)
-                        {
-                            Console.WriteLine("Ошибка: " + e.Message);
-                        }
-
-/*                        if (sportsLeague == null)
+                    case 12:
+                        if (sportsLeague == null)
                         {
                             Console.WriteLine("Спортлига не создана!");
                         }
-                        else
+                        else if (sportsLeague.IsEmpty())
                         {
                             sportsLeague.ClearMemory();
                             sportsLeague = null;
-                        }*/
+                            Console.WriteLine("Структура удалена.");
+                        }
                         Console.WriteLine();
+                        break;
+                    case 13:
+                        menu = false;
                         break;
                     default:
                         Console.WriteLine("Неверный ввод.\n");

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -26,31 +22,23 @@ namespace CourseWork_SAOD
         }
         public SportsLeague OpenFile()
         {
-            XmlDocument xDoc = new XmlDocument();
-            StreamReader sr = new StreamReader("D:\\Visual studio projects\\input.xml");
+            XmlDocument xmlDoc = new XmlDocument();
+            SportsLeague sportsLeague = null;
             try
             {
-                xDoc.Load(sr);
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                xmlDoc.Load(file_path);
+                XmlElement Root = xmlDoc.DocumentElement;
 
-            XmlElement xRoot = xDoc.DocumentElement;
+                sportsLeague = new SportsLeague(Root.GetAttribute("name").ToString());
 
-            SportsLeague sportsLeague = new SportsLeague(xRoot.GetAttribute("name").ToString());
-
-            if (xRoot != null)
-            {
-                foreach (XmlElement xnode in xRoot)
+                foreach (XmlElement node in Root)
                 {
-                    string teamName = xnode.Attributes.GetNamedItem("name").Value;
+                    string teamName = node.Attributes.GetNamedItem("name").Value;
                     Team team = new Team(teamName);
                     ListElement listElement = new ListElement(team);
                     sportsLeague.PushTeamEnd(listElement);
 
-                    foreach (XmlNode childnode in xnode.ChildNodes)
+                    foreach (XmlNode childnode in node.ChildNodes)
                     {
                         string player_surname = null;
                         int player_Num = 0;
@@ -71,24 +59,28 @@ namespace CourseWork_SAOD
                     }
                 }
             }
-
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             return sportsLeague;
         }
         public void Save(SportsLeague sportsleague)
         {
-            XDocument xdoc = new XDocument();
-
-            XElement sptleague = new XElement("SportsLeague");
-
-            XAttribute orgNameAttr = new XAttribute("name", sportsleague.GetName());
-
-            sptleague.Add(orgNameAttr);
-
-            sportsleague.ReadSportsLeagueData(sptleague);
-
-            xdoc.Add(sptleague);
-
-            xdoc.Save("D:\\Visual studio projects\\output.xml");
+            try
+            {
+                XDocument xmlDoc = new XDocument();
+                XElement sptleague = new XElement("SportsLeague");
+                XAttribute sptleague_name = new XAttribute("name", sportsleague.GetName());
+                sptleague.Add(sptleague_name);
+                sportsleague.ReadSportsLeagueData(sptleague);
+                xmlDoc.Add(sptleague);
+                xmlDoc.Save("file_path");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
