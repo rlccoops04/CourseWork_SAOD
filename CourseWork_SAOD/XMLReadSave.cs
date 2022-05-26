@@ -63,6 +63,7 @@ namespace CourseWork_SAOD
             {
                 Console.WriteLine(e.Message);
             }
+            xmlDoc = null;
             return sportsLeague;
         }
         public void Save(SportsLeague sportsleague)
@@ -75,7 +76,10 @@ namespace CourseWork_SAOD
                 sptleague.Add(sptleague_name);
                 sportsleague.ReadSportsLeagueData(sptleague);
                 xmlDoc.Add(sptleague);
-                xmlDoc.Save("file_path");
+                xmlDoc.Save(file_path);
+                xmlDoc = null;
+                sptleague = null;
+                sptleague_name = null;
             }
             catch (Exception e)
             {

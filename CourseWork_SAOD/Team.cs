@@ -73,6 +73,9 @@ namespace CourseWork_SAOD
                 sportsleague.Add(player);
                 count++;
                 player_current = players[count];
+                player = null;
+                player_name = null;
+                player_number = null;
             }
         }
         public void ClearMemory()

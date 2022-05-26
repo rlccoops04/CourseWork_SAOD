@@ -132,6 +132,8 @@ namespace CourseWork_SAOD
                 team_current.GetTeam().ReadTeamData(team);
                 sportsleague.Add(team);
                 team_current = team_current.GetNext();
+                team = null;
+                teamName = null;
             }
         }
         public void ClearMemory()
