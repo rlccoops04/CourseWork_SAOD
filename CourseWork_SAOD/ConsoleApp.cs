@@ -219,11 +219,7 @@ namespace CourseWork_SAOD
                         Console.WriteLine();
                         break;
                     case 7:
-                        if (sportsLeague == null)
-                        {
-                            Console.WriteLine("Спортлига не создана!");
-                        }
-                        else if (sportsLeague.IsEmpty())
+                        if (sportsLeague.IsEmpty())
                         {
                             Console.WriteLine("Не найдено ни одной команды.");
                         }
@@ -244,11 +240,7 @@ namespace CourseWork_SAOD
                         Console.WriteLine();
                         break;
                     case 8:
-                        if (sportsLeague == null)
-                        {
-                            Console.WriteLine("Спортлига не создана!");
-                        }
-                        else if (sportsLeague.IsEmpty())
+                        if (sportsLeague.IsEmpty())
                         {
                             Console.WriteLine("Не найдено ни одной команды.");
                         }
