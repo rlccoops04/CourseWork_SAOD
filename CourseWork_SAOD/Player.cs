@@ -6,7 +6,7 @@ namespace CourseWork_SAOD
     {
         private string player_surname;
         public string GetPlayerSurname() { return player_surname; }
-        public void SetPlayerSurname(string playerSurname) { this.player_surname = playerSurname; }
+        public void SetPlayerSurname(string player_surname) { this.player_surname = player_surname; }
 
         private int player_num;
         public int GetPlayerNum() { return player_num; }

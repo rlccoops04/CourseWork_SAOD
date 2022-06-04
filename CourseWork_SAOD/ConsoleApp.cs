@@ -43,7 +43,7 @@ namespace CourseWork_SAOD
             }
             return sportsLeague;
         }
-        public static void RunMenu()
+        public void RunMenu()
         {
             SportsLeague sportsLeague = InputStructure();
             ListElement searchedElement, listElement;
@@ -187,6 +187,7 @@ namespace CourseWork_SAOD
                                 {
                                     player = searchedElement.GetTeam().Pop();
                                     Console.WriteLine($"Удаленный игрок: {player.GetPlayerSurname()} - {player.GetPlayerNum()}");
+                                    player = null;
                                 }
                                 else
                                 {

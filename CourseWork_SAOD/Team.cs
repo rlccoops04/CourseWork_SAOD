@@ -5,8 +5,9 @@ namespace CourseWork_SAOD
 {
     public class Team
     {
-        private Player[] players = new Player[11];
-        public int GetMaxPlayers() { return players.Length; }
+        private const int max_players = 11;
+        private Player[] players;
+        public int GetMaxPlayers() { return max_players; }
 
         private int count_players;
         public int GetCountPlayers() { return count_players; }
@@ -19,18 +20,13 @@ namespace CourseWork_SAOD
         public Team(string name_team)
         {
             SetName(name_team);
+            players = new Player[max_players];
         }
-
         public bool IsEmpty() { return (count_players == 0); }
         public bool IsFull() { return (count_players == GetMaxPlayers()); }
-        public void Push(Player player)
+        public void Push(string player_surname, int player_num)
         {
-            players[count_players] = player;
-            count_players++;
-        }
-        public void Push(string playerSurname, int playerNum)
-        {
-            Player player = new Player(playerSurname, playerNum);
+            Player player = new Player(player_surname, player_num);
             players[count_players] = player;
             count_players++;
         }

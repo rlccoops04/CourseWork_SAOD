@@ -8,14 +8,8 @@ namespace CourseWork_SAOD
     public class XMLReadSave
     {
         private string file_path;
-        public string GetFilePath()
-        {
-            return file_path;
-        }
-        public void SetFilePath(string file_path)
-        {
-            this.file_path = file_path;
-        }
+        public string GetFilePath() { return file_path; }
+        public void SetFilePath(string file_path) { this.file_path = file_path; }
         public XMLReadSave(string file_path)
         {
             SetFilePath(file_path);
@@ -28,16 +22,13 @@ namespace CourseWork_SAOD
             {
                 xmlDoc.Load(file_path);
                 XmlElement Root = xmlDoc.DocumentElement;
-
                 sportsLeague = new SportsLeague(Root.GetAttribute("name").ToString());
-
                 foreach (XmlElement node in Root)
                 {
                     string teamName = node.Attributes.GetNamedItem("name").Value;
                     Team team = new Team(teamName);
                     ListElement listElement = new ListElement(team);
                     sportsLeague.PushTeamEnd(listElement);
-
                     foreach (XmlNode childnode in node.ChildNodes)
                     {
                         string player_surname = null;
@@ -49,8 +40,7 @@ namespace CourseWork_SAOD
                             {
                                 player_surname = ch.InnerText;
                             }
-
-                            if (ch.Name == "playernumber")
+                            else if (ch.Name == "playernumber")
                             {
                                 player_Num = Convert.ToInt32(ch.InnerText);
                             }

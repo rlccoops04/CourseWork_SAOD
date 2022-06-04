@@ -6,7 +6,9 @@ namespace CourseWork_SAOD
     {
         static void Main(string[] args)
         {
-            ConsoleApp.RunMenu();
+            ConsoleApp MainApp = new ConsoleApp();
+            MainApp.RunMenu();
+            MainApp = null;
         }
     }
 }

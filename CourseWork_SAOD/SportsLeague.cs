@@ -15,26 +15,14 @@ namespace CourseWork_SAOD
 
         private int count_teams;
         public int GetCountTeams() { return count_teams; }
-        public void SetCountTeams(int countTeams) { this.count_teams = countTeams; }
+        public void SetCountTeams(int count_teams) { this.count_teams = count_teams; }
 
-        private int countPlayers;
-        public int GetCountPlayers() 
+        public SportsLeague(string name_sportsleague)
         {
-            ListElement pCurrent = pHead;
-            while(pCurrent != null)
-            {
-                countPlayers += pCurrent.GetTeam().GetCountPlayers();
-                pCurrent = pCurrent.GetNext();
-            }
-            return countPlayers; 
-        }
-        public void SetCountPlayers(int countPlayers) { this.countPlayers = countPlayers; }
-
-        public SportsLeague(string name)
-        {
-            SetName(name);
+            SetName(name_sportsleague);
             Team team = null;
             pHead = new ListElement(team);
+            pHead.SetNext(null);
         }
 
         public bool IsEmpty() { return count_teams == 0; }
@@ -65,9 +53,9 @@ namespace CourseWork_SAOD
                 pCurrent = pCurrent.GetNext();
             }
             Team team = new Team(name_new);
-            ListElement newElement = new ListElement(team);
-            newElement.SetNext(pCurrent.GetNext());
-            pCurrent.SetNext(newElement);
+            ListElement pTemp = new ListElement(team);
+            pTemp.SetNext(pCurrent.GetNext());
+            pCurrent.SetNext(pTemp);
             count_teams++;
         }
         public void PushTeamBefore(string name_new, string name_search)
@@ -80,9 +68,9 @@ namespace CourseWork_SAOD
                 pCurrent = pCurrent.GetNext();
             }
             Team team = new Team(name_new);
-            ListElement newElement = new ListElement(team);
-            newElement.SetNext(pCurrent);
-            pPrevious.SetNext(newElement);
+            ListElement pTemp = new ListElement(team);
+            pTemp.SetNext(pCurrent);
+            pPrevious.SetNext(pTemp);
             count_teams++;
         }
         public void Remove(string name_search)
