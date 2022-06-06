@@ -11,7 +11,7 @@ namespace CourseWork_SAOD
 
         private int count_players;
         public int GetCountPlayers() { return count_players; }
-        public void SetCountPlayers(int countplayers) { this.count_players = countplayers; }
+        public void SetCountPlayers(int count_players) { this.count_players = count_players; }
 
         private string name_team;
         public string GetName() { return name_team; }
@@ -32,14 +32,14 @@ namespace CourseWork_SAOD
         }
         public Player Pop()
         {
-            Player temp = players[count_players - 1];
-            players[count_players - 1] = null;
             count_players--;
+            Player temp = players[count_players];
+            players[count_players] = null;
             return temp;
         }
         public void Display()
         {
-            int count = 0;
+            int count = count_players - 1;
             Console.WriteLine($"Команда - {name_team}.\nСостав игроков:");
             if (IsEmpty())
             {
@@ -47,28 +47,28 @@ namespace CourseWork_SAOD
             }
             else
             {
-                while (count < count_players)
+                while (count >= 0)
                 {
                     Console.WriteLine($"{players[count].GetPlayerSurname()} - {players[count].GetPlayerNum()}");
-                    count++;
+                    count--;
                 }
             }
             Console.WriteLine();
         }
-        public void ReadTeamData(XElement sportsleague)
+        public void ReadTeamData(XElement _team)
         {
-            int count = 0;
-            Player player_current = players[count];
-            while (count < count_players)
+            int count = count_players - 1;
+            Player player_current;
+            while (count >= 0)
             {
+                player_current = players[count];
                 XElement player = new XElement("player");
                 XElement player_name = new XElement("surname", player_current.GetPlayerSurname());
                 XElement player_number = new XElement("playernumber", player_current.GetPlayerNum());
                 player.Add(player_name); 
                 player.Add(player_number);
-                sportsleague.Add(player);
-                count++;
-                player_current = players[count];
+                _team.Add(player);
+                count--;
                 player = null;
                 player_name = null;
                 player_number = null;
@@ -76,10 +76,9 @@ namespace CourseWork_SAOD
         }
         public void ClearMemory()
         {
-            while(count_players != 0)
+            while(count_players > 0)
             {
-                players[count_players - 1] = null;
-                count_players--;
+                Pop();
             }
             players = null;
         }

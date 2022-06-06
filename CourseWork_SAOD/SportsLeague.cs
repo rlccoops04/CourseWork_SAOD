@@ -4,7 +4,7 @@ using System.Xml.Linq;
 namespace CourseWork_SAOD
 {
     public class SportsLeague
-    {
+    {   
         private string name_sportsleague;
         public string GetName() { return name_sportsleague; }
         public void SetName(string name_sportsleague) { this.name_sportsleague = name_sportsleague; }

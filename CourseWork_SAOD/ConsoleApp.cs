@@ -1,21 +1,40 @@
 ﻿using System;
-using System.Xml;
 
 namespace CourseWork_SAOD
 {
 
     public class ConsoleApp
     {
+        public static int InputInt()
+        {
+            string input;
+            int integer = -1;
+            bool check = true;
+            while (check)
+            {
+                input = Console.ReadLine();
+                try
+                {
+                    integer = int.Parse(input);
+                    check = false;
+                }
+                catch
+                {
+                    Console.Write("Введите целое число: ");
+                }
+            }
+            return integer;
+        }
         public static SportsLeague InputStructure()
         {
             XMLReadSave xmlFile;
-            SportsLeague sportsLeague;
+            SportsLeague sportsLeague = null;
             int input;
             string name, file_path;
             while (true)
             {
                 Console.Write("1) Создать спортлигу.\n2) Загрузить структуру спортлиги из XML-файла\nВвод: ");
-                input = int.Parse(Console.ReadLine());
+                input = InputInt();
                 if (input == 1)
                 {
                     Console.Write("Введите название спортлиги: ");
@@ -36,7 +55,7 @@ namespace CourseWork_SAOD
                     Console.WriteLine();
                     break;
                 }
-                else
+                else if (input == 3)
                 {
                     Console.WriteLine("Неверный ввод.");
                 }
@@ -45,7 +64,11 @@ namespace CourseWork_SAOD
         }
         public void RunMenu()
         {
-            SportsLeague sportsLeague = InputStructure();
+            SportsLeague sportsLeague = null;
+            while (sportsLeague == null)
+            {
+                sportsLeague = InputStructure();
+            }
             ListElement searchedElement, listElement;
             Team team;
             Player player;
@@ -66,9 +89,10 @@ namespace CourseWork_SAOD
                                   "8) Показать команды\n" +
                                   "9) Показать команды с их составами\n" +
                                   "10) Сохранить структуру спортлиги в XML-файл\n" +
-                                  "11) Очистить структуру\n");
+                                  "11) Очистить структуру\n" +
+                                  "12) Выход");
                 Console.Write("Ввод: ");
-                choicemenu = int.Parse(Console.ReadLine());
+                choicemenu = InputInt();
                 Console.WriteLine();
                 switch (choicemenu)
                 {
@@ -76,6 +100,7 @@ namespace CourseWork_SAOD
                         Console.Write("Введите название спортлиги: ");
                         name = Console.ReadLine();
                         sportsLeague.SetName(name);
+                        Console.WriteLine("Спортлига переименована.");
                         Console.WriteLine();
                         break;
                     case 2:
@@ -87,6 +112,7 @@ namespace CourseWork_SAOD
                             listElement = new ListElement(team);
                             sportsLeague.GetHead().SetNext(listElement);
                             sportsLeague.SetCountTeams(1);
+                            Console.WriteLine("Команда добавлена в спортлигу.");
                         }
                         else
                         {
@@ -100,14 +126,16 @@ namespace CourseWork_SAOD
                             else
                             {
                                 Console.Write("Добавить до(0) или после(1) другой команды в список: ");
-                                choicepush = int.Parse(Console.ReadLine());
+                                choicepush = InputInt();
                                 if (choicepush == 0)
                                 {
                                     sportsLeague.PushTeamBefore(name, name_search);
+                                    Console.WriteLine("Команда добавлена в спортлигу.");
                                 }
                                 else if (choicepush == 1)
                                 {
                                     sportsLeague.PushTeamAfter(name, name_search);
+                                    Console.WriteLine("Команда добавлена в спортлигу.");
                                 }
                                 else
                                 {
@@ -135,13 +163,17 @@ namespace CourseWork_SAOD
                             {
                                 if(searchedElement.GetTeam().IsFull())
                                 {
-
+                                    Console.WriteLine("Команда переполнена.");
                                 }
-                                Console.Write("Введите фамилию нового игрока: ");
-                                name = Console.ReadLine();
-                                Console.Write("Введите номер нового игрока: ");
-                                player_num = int.Parse(Console.ReadLine());
-                                searchedElement.GetTeam().Push(name, player_num);
+                                else
+                                {
+                                    Console.Write("Введите фамилию нового игрока: ");
+                                    name = Console.ReadLine();
+                                    Console.Write("Введите номер нового игрока: ");
+                                    player_num = InputInt();
+                                    searchedElement.GetTeam().Push(name, player_num);
+                                    Console.WriteLine("Игрок добавлен в команду.");
+                                }
                             }
                         }
                         Console.WriteLine();
@@ -163,6 +195,7 @@ namespace CourseWork_SAOD
                             else
                             {
                                 sportsLeague.Remove(name_search);
+                                Console.WriteLine("Команда удалена из спортлиги.");
                             }
                         }
                         Console.WriteLine();
@@ -273,28 +306,27 @@ namespace CourseWork_SAOD
                         Console.WriteLine();
                         break;
                     case 11:
-                        if (!sportsLeague.IsEmpty())
-                        {
-                            sportsLeague.ClearMemory();
-                            sportsLeague = null;
-                            Console.WriteLine("Структура удалена.");
-                        }
-                        else
-                        {
-                            sportsLeague = null;
-                            Console.WriteLine("Структура удалена.");
-                        }
-                        Console.WriteLine();
-                        Console.Write("Добавить новую структуру(0) или выход(1): ");
-                        input = int.Parse(Console.ReadLine());
+                        sportsLeague.ClearMemory();
+                        sportsLeague = null;
+                        Console.WriteLine("Структура удалена.");
+                        Console.WriteLine("Выход (0) или ввод новой структуры (1): ");
+                        input = InputInt();
                         if (input == 0)
-                        {
-                            sportsLeague = InputStructure();
-                        }
-                        else
                         {
                             menu = false;
                         }
+                        else
+                        {
+                            while (sportsLeague == null)
+                            {
+                                sportsLeague = InputStructure();
+                            }
+                        }
+                        break;
+                    case 12:
+                        sportsLeague.ClearMemory();
+                        sportsLeague = null;
+                        menu = false;
                         break;
                     default:
                         Console.WriteLine("Неверный ввод.\n");
